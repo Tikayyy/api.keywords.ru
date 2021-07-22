@@ -34,11 +34,11 @@ class AuthController extends Controller
             $user->save();
 
             //return successful response
-            return response()->json(['user' => $user, 'message' => 'CREATED'], 201);
+            return response()->json(['success' => 'true', 'message' => 'CREATED', 'data' => $user], 201);
 
         } catch (\Exception $e) {
             //return error message
-            return response()->json(['message' => 'User Registration Failed!'], 409);
+            return response()->json(['success' => 'false', 'message' => 'User Registration Failed!', 'error_code' => 409, 'data' => $user], 409);
         }
     }
     
@@ -59,7 +59,7 @@ class AuthController extends Controller
         $credentials = $request->only(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+            return response()->json(['success' => 'false', 'message' => 'Unauthorized', 'error_code' => 401, 'data' => $credentials], 401);
         }
 
         return $this->respondWithToken($token);
@@ -69,6 +69,6 @@ class AuthController extends Controller
     {
         Auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['success' => 'true', 'message' => 'Successfully logged out', 'data' => NULL]);
     }
 }

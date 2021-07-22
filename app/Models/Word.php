@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Word extends Model
 {
-    public function keyWords(){
-        return $this->belongsToMany('Image', 'image_word', 'word_id', 'image_id');
+    public function images(){
+        return $this->belongsToMany('App\Models\Image', 'word_image', 'word_id', 'image_id');
     }
 }

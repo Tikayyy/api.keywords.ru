@@ -15,10 +15,9 @@ class CreateWordsTable extends Migration
     {
         Schema::create('words', function (Blueprint $table) {
             $table->id();
-            $table->string('text');
-            $table->string('rus_text');
+            $table->string('text')->nullable();
+            $table->string('rus_text')->nullable();
             $table->float('popularity');
-            $table->integer('image_id');
             $table->timestamps();
         });
     }

@@ -13,21 +13,20 @@
 |
 */
 $router->group(['prefix' => 'api'], function () use ($router) {
-    $router->get('/', ['uses' => 'IndexController@index', 'as' => 'index']);
-
     //Auth routes
-    $router->post('/login', ['uses' => 'AuthController@login', 'as' => 'login']); // done
-    $router->post('/logout', ['uses' => 'AuthController@logout', 'as' => 'logout']); // done
-    $router->post('/register', ['uses' => 'AuthController@register', 'as' => 'register']); // done
+    $router->post('/login', ['uses' => 'AuthController@login', 'as' => 'login']);
+    $router->post('/logout', ['uses' => 'AuthController@logout', 'as' => 'logout']);
+    $router->post('/register', ['uses' => 'AuthController@register', 'as' => 'register']);
 
     //Images routes
-    $router->get('/images', ['uses' => 'ImagesController@getImage', 'as' => 'getImage']); // not done
+    $router->get('/images/{id_word}', ['uses' => 'ImagesController@getImage', 'as' => 'getImage']);
     $router->group(['middleware' => 'auth'], function () use ($router){
-        $router->post('/images', ['uses' => 'ImagesController@upload', 'as' => 'upload']); // done
-        $router->put('/images', ['uses' => 'ImagesController@change', 'as' => 'change']); //?
-        $router->delete('/images[{id}]', ['uses' => 'ImagesController@delete', 'as' => 'delete']); // done
+        $router->post('/images', ['uses' => 'ImagesController@upload', 'as' => 'uploadImage']);
+        $router->put('/images/{id_image}/{id_word}', ['uses' => 'ImagesController@changeImage', 'as' => 'changeImage']);
+        $router->delete('/images/{id}', ['uses' => 'ImagesController@delete', 'as' => 'deleteImage']);
     });
 
     //Words routes
-    $router->get('/keyword', ['uses' => 'WordController@keyword', 'as' => 'keyword']); // not done
+    $router->post('/keyword', ['uses' => 'WordController@addKeyword', 'as' => 'addKeyword']);
+    $router->get('/keyword', ['uses' => 'WordController@showKeyword', 'as' => 'showKeyword']);
 });

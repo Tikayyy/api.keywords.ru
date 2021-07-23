@@ -17,7 +17,11 @@ class CreateWordsTable extends Migration
             $table->id();
             $table->string('text')->nullable();
             $table->string('rus_text')->nullable();
-            $table->float('popularity');
+            $table->float('popularity')->default(0);
+
+            $table->bigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categorys');
+
             $table->timestamps();
         });
     }

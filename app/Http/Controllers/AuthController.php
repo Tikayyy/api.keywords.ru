@@ -16,7 +16,7 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        //validate incoming request 
+        //validate incoming request
         $this->validate($request, [
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
@@ -24,7 +24,7 @@ class AuthController extends Controller
         ]);
 
         try {
-           
+
             $user = new User;
             $user->name = $request->input('name');
             $user->email = $request->input('email');
@@ -41,7 +41,7 @@ class AuthController extends Controller
             return response()->json(['success' => 'false', 'message' => 'User Registration Failed!', 'error_code' => 409, 'data' => $user], 409);
         }
     }
-    
+
     /**
      * Get a JWT via given credentials.
      *
@@ -50,7 +50,7 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-          //validate incoming request 
+          //validate incoming request
         $this->validate($request, [
             'email' => 'required|string',
             'password' => 'required|string',
@@ -59,10 +59,10 @@ class AuthController extends Controller
         $credentials = $request->only(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['success' => 'false', 'message' => 'Unauthorized', 'error_code' => 401, 'data' => $credentials], 401);
+            return response()->json(['success' => 'false', 'message' => 'Unauthorized', 'error_code' => 209, 'data' => $credentials], 209);
         }
 
-        return $this->respondWithToken($token);
+        return $this->respondWithToken(['success' => 'true', 'message' => 'Authorized', 'error_code' => 401, 'data' => $token]);
     }
 
     public function logout()

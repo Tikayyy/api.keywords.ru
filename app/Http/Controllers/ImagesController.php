@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Word;
 use Illuminate\Http\Request;
 use App\Models\Image;
@@ -54,12 +55,17 @@ class ImagesController extends Controller
 
     public function changeImage(Request $request)
     {
-        try {
+        $this->validate($request, [
+            'text' => 'string',
+            'rus_text' => 'string',
+        ]);
+
+        try {// need to change
             $image_id = $request->route('id_image');
             $word_id = $request->route('id_word');
-
-           // $image = Image::find($image_id);
-           // $word = Image::find($word_id);
+            //$text = $request->input('text');
+            // $image = Image::find($image_id);
+            // $word = Image::find($word_id);
 
             $word_image_id = new Word_Image;
             $word_image_id->image_id = $image_id;
@@ -89,7 +95,48 @@ class ImagesController extends Controller
 
         } catch (\Exception $e) {
             //return error message
-            return response()->json(['success' => 'false', 'message' => 'Cannot create keyword', 'error_code' => 409, 'data' => $word_image_id], 409);
+            return response()->json(['success' => 'false', 'message' => 'Cannot create keyword', 'error_code' => 409, 'data' => NULL], 409);
+        }
+    }
+
+    public function addCategory(Request $request)
+    {
+        try {
+            $category = new Category;
+
+            $category_name = $request->input('category');
+            $category->category = $category_name;
+
+            $category->save();
+
+            $word = new Word;
+
+            $word->text = $request->input('text');
+            $word->category_id = $category->id;
+
+            $word->save();
+
+            $file = $request->file('image');
+            $name = time().'.'.$file->getClientOriginalExtension();
+            $destinationPath = storage_path('images');
+            $file->move($destinationPath, $name);
+
+            $image = new Image;
+            $image->name = $name;
+
+            $image->save();
+
+            $word_image = new Word_Image;
+            $word_image->word_id = $word->id;
+            $word_image->image_id = $image->id;
+
+            $word_image->save();
+            //return successful response
+            return response()->json(['success' => 'true', 'message' => 'Category created', 'data' => [$image, $word]], 201);
+
+        } catch (\Exception $e) {
+            //return error message
+            return response()->json(['success' => 'false', 'message' => 'Cannot create category', 'error_code' => 409, 'data' => NULL], 409);
         }
     }
 }

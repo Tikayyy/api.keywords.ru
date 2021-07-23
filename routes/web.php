@@ -19,14 +19,19 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('/register', ['uses' => 'AuthController@register', 'as' => 'register']);
 
     //Images routes
-    $router->get('/images/{id_word}', ['uses' => 'ImagesController@getImage', 'as' => 'getImage']);
+    $router->get('/images/{id_word}', ['uses' => 'ImagesController@getImage', 'as' => 'getImage']); // Getting image with keyword
     $router->group(['middleware' => 'auth'], function () use ($router){
         $router->post('/images', ['uses' => 'ImagesController@upload', 'as' => 'uploadImage']);
-        $router->put('/images/{id_image}/{id_word}', ['uses' => 'ImagesController@changeImage', 'as' => 'changeImage']);
+        $router->put('/images/{id_image}/{id_word}', ['uses' => 'ImagesController@changeImage', 'as' => 'changeImage']); // Spare exist image with exist keyword
         $router->delete('/images/{id}', ['uses' => 'ImagesController@delete', 'as' => 'deleteImage']);
+
+        $router->post('/keyword/{image_id}', ['uses' => 'WordController@addKeywordToImage', 'as' => 'addKeywordToImage']); //Adding keyword for image
     });
 
     //Words routes
-    $router->post('/keyword', ['uses' => 'WordController@addKeyword', 'as' => 'addKeyword']);
+    $router->post('/keyword', ['uses' => 'WordController@addKeyword', 'as' => 'addKeyword']); // Adding new keyword
     $router->get('/keyword', ['uses' => 'WordController@showKeyword', 'as' => 'showKeyword']);
+
+    $router->post('/add_category', ['uses' => 'ImagesController@addCategory', 'as' => 'addCategory']); // Adding new category
+
 });

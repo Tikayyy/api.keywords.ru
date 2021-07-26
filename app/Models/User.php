@@ -13,6 +13,17 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
+
+    /**
+     * @OA\Schema(
+     *     schema="Users",
+     *     @OA\Property(property="id", type="number"),
+     *     @OA\Property(property="name", type="string"),
+     *     @OA\Property(property="email", type="string"),
+     *     @OA\Property(property="password", type="string"),
+     * )
+     */
+
     use Authenticatable, Authorizable;
 
     /**
@@ -34,7 +45,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
 
-  
+
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

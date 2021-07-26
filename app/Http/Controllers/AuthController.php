@@ -8,6 +8,82 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+
+    /**
+     * @OA\Post(
+     *     path="/api/register",
+     *     operationId="/api/register",
+     *     tags={"register"},
+     *     @OA\Parameter(
+     *         name="register",
+     *         in="path",
+     *         description="Method for registretion",
+     *         required=true,
+     *         @OA\JsonContent(
+     *                  required={"name","email", "password", "password_confirmation"},
+     *                  @OA\Property(property="name", type="string", format="text", example="user1"),
+     *                  @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
+     *                  @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
+     *                  @OA\Property(property="password_confirmation", type="string", format="password", example="PassWord12345"),
+     *              ),
+     *     ),
+     *     @OA\Response(
+     *         response="201",
+     *         description="User created successfully",
+     *     ),
+     *     @OA\Response(
+     *         response="409",
+     *         description="Error: Cannot create user.",
+     *     ),
+     * )
+     */
+
+    /**
+     * @OA\Post(
+     *     path="/api/login",
+     *     operationId="/api/login",
+     *     tags={"login"},
+     *     @OA\Parameter(
+     *         name="login",
+     *         in="path",
+     *         description="Method for log in",
+     *         required=true,
+     *         @OA\JsonContent(
+     *                  required={"email", "password"},
+     *                  @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
+     *                  @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
+     *              ),
+     *     ),
+     *     @OA\Response(
+     *         response="201",
+     *         description="Logged in",
+     *     ),
+     *     @OA\Response(
+     *         response="409",
+     *         description="Error: Unauthorized.",
+     *     ),
+     * )
+     */
+
+    /**
+     * @OA\Post(
+     *     path="/api/logout",
+     *     operationId="/api/logout",
+     *     tags={"logout"},
+     *     @OA\Parameter(
+     *         name="logout",
+     *         in="path",
+     *         description="Method for log out",
+     *         required=true,
+     *     ),
+     *     @OA\Response(
+     *         response="201",
+     *         description="Logged out",
+     *     ),
+     * )
+     */
+
+
    /**
      * Store a new user.
      *

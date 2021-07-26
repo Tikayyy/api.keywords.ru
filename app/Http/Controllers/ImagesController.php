@@ -11,6 +11,33 @@ use Illuminate\Support\Facades\Storage;
 
 class ImagesController extends Controller
 {
+    /**
+     * @OA\Post(
+     *     path="/api/images",
+     *     operationId="/api/images",
+     *     tags={"Upload image"},
+     *     @OA\Parameter(
+     *         name="upload image",
+     *         in="path",
+     *         description="Method for uploading images",
+     *         required=true,
+     *         @OA\JsonContent(
+     *                  required={"image"},
+     *                  @OA\Property(property="images", type="file", format="file", example="C:/images/123.png"),
+     *              ),
+     *     ),
+     *     @OA\Response(
+     *         response="201",
+     *         description="UPLOADED",
+     *         @OA\JsonContent()
+     *     ),
+     *     @OA\Response(
+     *         response="409",
+     *         description="Error: Cannot upload image.",
+     *     ),
+     * )
+     */
+
     public function upload(Request $request)
     {
         try {
@@ -29,9 +56,32 @@ class ImagesController extends Controller
 
         } catch (\Exception $e) {
             //return error message
-            return response()->json(['success' => 'false', 'message' => 'User Registration Failed!', 'error_code' => 409, 'data' => $image], 409);
+            return response()->json(['success' => 'false', 'message' => 'Cannot upload image', 'error_code' => 409, 'data' => $image], 409);
         }
     }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/images/{id}",
+     *     operationId="/api/images/{id}",
+     *     tags={"Delete image"},
+     *     @OA\Parameter(
+     *         name="delete image",
+     *         in="path",
+     *         description="Method for deleting images",
+     *         required=true,
+     *     ),
+     *     @OA\Response(
+     *         response="201",
+     *         description="DELETED",
+     *         @OA\JsonContent()
+     *     ),
+     *     @OA\Response(
+     *         response="409",
+     *         description="Error: Cannot deleted image.",
+     *     ),
+     * )
+     */
 
     public function delete(Request $request)
     {
@@ -53,6 +103,32 @@ class ImagesController extends Controller
         }
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/images/{id_image}/{id_word}",
+     *     operationId="/api/images/{id_image}/{id_word}",
+     *     tags={"Bind keyword with image"},
+     *     @OA\Parameter(
+     *         name="Bind keyword with image",
+     *         in="path",
+     *         description="Method for bind keyword with image",
+     *         required=true,
+     *         @OA\JsonContent(
+     *                  required={"image_id in url", "word_id in url"},
+     *              ),
+     *     ),
+     *     @OA\Response(
+     *         response="201",
+     *         description="DONE",
+     *         @OA\JsonContent()
+     *     ),
+     *     @OA\Response(
+     *         response="409",
+     *         description="Error: Cannot bind keyword with image.",
+     *     ),
+     * )
+     */
+
     public function changeImage(Request $request)
     {
         $this->validate($request, [
@@ -63,9 +139,6 @@ class ImagesController extends Controller
         try {// need to change
             $image_id = $request->route('id_image');
             $word_id = $request->route('id_word');
-            //$text = $request->input('text');
-            // $image = Image::find($image_id);
-            // $word = Image::find($word_id);
 
             $word_image_id = new Word_Image;
             $word_image_id->image_id = $image_id;
@@ -78,14 +151,41 @@ class ImagesController extends Controller
 
         } catch (\Exception $e) {
             //return error message
-            return response()->json(['success' => 'false', 'message' => 'Cannot create keyword', 'error_code' => 409, 'data' => $word_image_id], 409);
+            return response()->json(['success' => 'false', 'message' => 'Cannot bind keyword with image', 'error_code' => 409, 'data' => $word_image_id], 409);
         }
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/images",
+     *     operationId="/api/images",
+     *     tags={"Getting images using keyword"},
+     *     @OA\Parameter(
+     *         name="Getting images using keyword",
+     *         in="path",
+     *         description="Method for getting images using keyword",
+     *         required=true,
+     *         @OA\JsonContent(
+     *                  required={"keyword"},
+     *                  @OA\Property(property="keyword", type="strind", format="text", example="Word1"),
+     *              ),
+     *     ),
+     *     @OA\Response(
+     *         response="201",
+     *         description="DONE",
+     *         @OA\JsonContent()
+     *     ),
+     *     @OA\Response(
+     *         response="409",
+     *         description="Error: Cannot find image.",
+     *     ),
+     * )
+     */
 
     public function getImage(Request $request)
     {
         try {
-            $word_id = $request->route('id_word');
+            $word_id = $request->input('keyword');
             $word = Word::find($word_id)->first();
 
             $image = $word->images;
@@ -95,48 +195,9 @@ class ImagesController extends Controller
 
         } catch (\Exception $e) {
             //return error message
-            return response()->json(['success' => 'false', 'message' => 'Cannot create keyword', 'error_code' => 409, 'data' => NULL], 409);
+            return response()->json(['success' => 'false', 'message' => 'Cannot find image', 'error_code' => 409, 'data' => NULL], 409);
         }
     }
 
-    public function addCategory(Request $request)
-    {
-        try {
-            $category = new Category;
 
-            $category_name = $request->input('category');
-            $category->category = $category_name;
-
-            $category->save();
-
-            $word = new Word;
-
-            $word->text = $request->input('text');
-            $word->category_id = $category->id;
-
-            $word->save();
-
-            $file = $request->file('image');
-            $name = time().'.'.$file->getClientOriginalExtension();
-            $destinationPath = storage_path('images');
-            $file->move($destinationPath, $name);
-
-            $image = new Image;
-            $image->name = $name;
-
-            $image->save();
-
-            $word_image = new Word_Image;
-            $word_image->word_id = $word->id;
-            $word_image->image_id = $image->id;
-
-            $word_image->save();
-            //return successful response
-            return response()->json(['success' => 'true', 'message' => 'Category created', 'data' => [$image, $word]], 201);
-
-        } catch (\Exception $e) {
-            //return error message
-            return response()->json(['success' => 'false', 'message' => 'Cannot create category', 'error_code' => 409, 'data' => NULL], 409);
-        }
-    }
 }

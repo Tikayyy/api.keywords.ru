@@ -1,0 +1,558 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Keywords API",
+        "contact": {
+            "name": "Yuriy",
+            "email": "yurkaon@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "register"
+                ],
+                "operationId": "/api/register",
+                "parameters": [
+                    {
+                        "name": "register",
+                        "in": "path",
+                        "description": "Method for registretion",
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "name",
+                                        "email",
+                                        "password",
+                                        "password_confirmation"
+                                    ],
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "format": "text",
+                                            "example": "user1"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email",
+                                            "example": "user1@mail.com"
+                                        },
+                                        "password": {
+                                            "type": "string",
+                                            "format": "password",
+                                            "example": "PassWord12345"
+                                        },
+                                        "password_confirmation": {
+                                            "type": "string",
+                                            "format": "password",
+                                            "example": "PassWord12345"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User created successfully"
+                    },
+                    "409": {
+                        "description": "Error: Cannot create user."
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "login"
+                ],
+                "operationId": "/api/login",
+                "parameters": [
+                    {
+                        "name": "login",
+                        "in": "path",
+                        "description": "Method for log in",
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "email",
+                                        "password"
+                                    ],
+                                    "properties": {
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email",
+                                            "example": "user1@mail.com"
+                                        },
+                                        "password": {
+                                            "type": "string",
+                                            "format": "password",
+                                            "example": "PassWord12345"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Logged in"
+                    },
+                    "409": {
+                        "description": "Error: Unauthorized."
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "logout"
+                ],
+                "operationId": "/api/logout",
+                "parameters": [
+                    {
+                        "name": "logout",
+                        "in": "path",
+                        "description": "Method for log out",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Logged out"
+                    }
+                }
+            }
+        },
+        "/api/categorys": {
+            "post": {
+                "tags": [
+                    "Categorys"
+                ],
+                "operationId": "/api/categorys",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "description": "Controller using for creating new category",
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "category",
+                                        "text",
+                                        "images"
+                                    ],
+                                    "properties": {
+                                        "category": {
+                                            "type": "string",
+                                            "format": "text",
+                                            "example": "Apple"
+                                        },
+                                        "text": {
+                                            "type": "string",
+                                            "format": "text",
+                                            "example": "Word1"
+                                        },
+                                        "images": {
+                                            "type": "file",
+                                            "format": "file",
+                                            "example": "C:/images/123.png"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Category created",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Error: Cannot create category."
+                    }
+                }
+            }
+        },
+        "/api/images": {
+            "get": {
+                "tags": [
+                    "Getting images using keyword"
+                ],
+                "operationId": "/api/images",
+                "parameters": [
+                    {
+                        "name": "Getting images using keyword",
+                        "in": "path",
+                        "description": "Method for getting images using keyword",
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "keyword"
+                                    ],
+                                    "properties": {
+                                        "keyword": {
+                                            "type": "strind",
+                                            "format": "text",
+                                            "example": "Word1"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "DONE",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Error: Cannot find image."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Upload image"
+                ],
+                "operationId": "/api/images",
+                "parameters": [
+                    {
+                        "name": "upload image",
+                        "in": "path",
+                        "description": "Method for uploading images",
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "image"
+                                    ],
+                                    "properties": {
+                                        "images": {
+                                            "type": "file",
+                                            "format": "file",
+                                            "example": "C:/images/123.png"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "UPLOADED",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Error: Cannot upload image."
+                    }
+                }
+            }
+        },
+        "/api/images/{id}": {
+            "delete": {
+                "tags": [
+                    "Delete image"
+                ],
+                "operationId": "/api/images/{id}",
+                "parameters": [
+                    {
+                        "name": "delete image",
+                        "in": "path",
+                        "description": "Method for deleting images",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "DELETED",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Error: Cannot deleted image."
+                    }
+                }
+            }
+        },
+        "/api/images/{id_image}/{id_word}": {
+            "put": {
+                "tags": [
+                    "Bind keyword with image"
+                ],
+                "operationId": "/api/images/{id_image}/{id_word}",
+                "parameters": [
+                    {
+                        "name": "Bind keyword with image",
+                        "in": "path",
+                        "description": "Method for bind keyword with image",
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "image_id in url",
+                                        "word_id in url"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "DONE",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Error: Cannot bind keyword with image."
+                    }
+                }
+            }
+        },
+        "/api/keyword": {
+            "post": {
+                "operationId": "/api/keyword",
+                "parameters": [
+                    {
+                        "name": "Adding keyword",
+                        "in": "path",
+                        "description": "Method for adding keyword",
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "popularity"
+                                    ],
+                                    "properties": {
+                                        "text": {
+                                            "type": "string",
+                                            "format": "text",
+                                            "example": "Word1"
+                                        },
+                                        "rus_text": {
+                                            "type": "string",
+                                            "format": "text",
+                                            "example": "Слово1"
+                                        },
+                                        "popularity": {
+                                            "type": "float",
+                                            "format": "number",
+                                            "example": "0.2"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "ADDED",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Error: Cannot added keyword."
+                    }
+                }
+            }
+        },
+        "/api/keyword/{image_id}": {
+            "post": {
+                "operationId": "/api/keyword/{image_id}",
+                "parameters": [
+                    {
+                        "name": "Adding keyword to image",
+                        "in": "path",
+                        "description": "Method for adding keyword to image",
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "text or rus_text",
+                                        "image_id in url"
+                                    ],
+                                    "properties": {
+                                        "text": {
+                                            "type": "string",
+                                            "format": "text",
+                                            "example": "Word1"
+                                        },
+                                        "rus_text": {
+                                            "type": "string",
+                                            "format": "text",
+                                            "example": "Слово1"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "DONE",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Error: Cannot create keyword."
+                    }
+                }
+            }
+        },
+        "/api/keywords": {
+            "get": {
+                "operationId": "/api/keywords",
+                "parameters": [
+                    {
+                        "name": "Showing keywords",
+                        "in": "path",
+                        "description": "Method for showing keywords",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Showing words",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Error: Cannot show words."
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Categorys": {
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "category": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Images": {
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Users": {
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Words": {
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "text": {
+                        "type": "string"
+                    },
+                    "rus_text": {
+                        "type": "string"
+                    },
+                    "popularity": {
+                        "type": "float"
+                    }
+                },
+                "type": "object"
+            },
+            "Word_Image": {
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "image_id": {
+                        "type": "integer"
+                    },
+                    "word_id": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
